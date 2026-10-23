@@ -1,0 +1,27 @@
+name: portainer-local
+
+services:
+  portainer:
+    image: portainer/base
+    container_name: portainer-local
+    restart: unless-stopped
+    working_dir: /app
+    command:
+      - /app/portainer
+      - --log-level=DEBUG
+      - --no-setup-token
+    environment:
+      CSP: "false"
+    ports:
+      - "${PORTAINER_HTTP_PORT:-9000}:9000"
+      - "${PORTAINER_HTTPS_PORT:-9443}:9443"
+      - "${PORTAINER_EDGE_PORT:-8000}:8000"
+    volumes:
+      - ../dist:/app
+      - portainer-local-data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/alternative.sock
+      - /tmp:/tmp
+
+volumes:
+  portainer-local-data:

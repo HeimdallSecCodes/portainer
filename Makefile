@@ -65,7 +65,7 @@ test-server:	## Run server tests
 	$(GOTESTSUM) --format pkgname-and-test-fails --format-hide-empty-pkg --hide-summary skipped -- -cover -covermode=atomic -coverprofile=coverage.out $(TEST_PACKAGES)
 
 ##@ Dev
-.PHONY: dev dev-client dev-server
+.PHONY: dev dev-client dev-server local
 dev: ## Run both the client and server in development mode
 	make dev-server
 	make dev-client
@@ -78,6 +78,9 @@ dev-server: build-server ## Run the server in development mode
 
 dev-server-podman: build-server ## Run the server in development mode
 	@./dev/run_container_podman.sh
+
+local: ## Build and run Portainer locally in Docker (ARGS=up|down|rebuild|logs|status|reset)
+	@./dev/local.sh $(ARGS)
 
 ##@ Format
 .PHONY: format format-client format-server
